@@ -13,3 +13,7 @@ housegur-api/
 ├─ .env
 ├─ requirements.txt
 └─ README.md
+
+
+--Start command en railway:
+--   uvicorn app.main:app --host 0.0.0.0 --port $PORT
