@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import auth, properties, transactions
+from app.routers import auth, properties, transactions
 
 app = FastAPI(title="HOUSEGUR API v1.0")
 
