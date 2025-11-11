@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from app.routers import auth, properties, transactions
 from app.database import SessionLocal
 import logging
@@ -35,7 +36,7 @@ def startup_db_check():
     try:
         db = SessionLocal()
         # Try a simple query to verify connection
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db.close()
         logger.info("[DB] ✅ Connected successfully to Railway MySQL")
         print("[DB] ✅ Connected successfully to Railway MySQL")
