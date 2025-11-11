@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from sqlalchemy import text
 from app.routers import auth, properties, transactions
 from app.database import SessionLocal
@@ -9,6 +10,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="HOUSEGUR API v1.0")
+
+# =====================
+# Handle CORS preflight (OPTIONS) globally
+# =====================
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    """Handle CORS preflight OPTIONS requests."""
+    return Response(
+        status_code=200,
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+            "Access-Control-Max-Age": "3600",
+        },
+    )
 
 # =====================
 # CORS Configuration
