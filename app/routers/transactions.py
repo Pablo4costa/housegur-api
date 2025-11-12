@@ -6,8 +6,8 @@ router = APIRouter()
 
 @router.post("/buy", response_model=TransactionResponse)
 def buy_tokens(req: TransactionRequest):
-    return comprar_tokens(req.user_id, req.property_id, req.tokens)
+    return comprar_tokens(req.usuario_id, req.propiedad_id, req.cantidad_tokens, req.precio_unitario)
 
 @router.post("/sell", response_model=TransactionResponse)
 def sell_tokens(req: TransactionRequest):
-    return vender_tokens(req.user_id, req.property_id, req.tokens)
+    return vender_tokens(req.usuario_id, req.propiedad_id, req.cantidad_tokens, req.precio_unitario)

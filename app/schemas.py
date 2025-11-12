@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from decimal import Decimal
 
 class LoginRequest(BaseModel):
     nombre: str
@@ -10,12 +11,13 @@ class LoginResponse(BaseModel):
     nombre: str
 
 class TransactionRequest(BaseModel):
-    user_id: int
-    property_id: int
-    tokens: int
+    usuario_id: int
+    propiedad_id: int
+    cantidad_tokens: int
+    precio_unitario: Decimal
 
 class TransactionResponse(BaseModel):
     status: str
     message: str
-    tokens: int
+    cantidad_tokens: int
     propiedad_id: int

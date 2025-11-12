@@ -1,4 +1,5 @@
 from sqlalchemy import text
+from decimal import Decimal
 from .database import SessionLocal
 
 def login_user(nombre: str, email: str):
@@ -22,25 +23,45 @@ def login_user(nombre: str, email: str):
         db.close()
 
 
-def comprar_tokens(user_id: int, property_id: int, tokens: int):
+def comprar_tokens(usuario_id: int, propiedad_id: int, cantidad_tokens: int, precio_unitario: Decimal):
     db = SessionLocal()
     try:
         db.execute(text("""
-            CALL housegur.sp_comprar_tokens(:user_id, :property_id, :tokens, 0);
-        """), {"user_id": user_id, "property_id": property_id, "tokens": tokens})
+            CALL housegur.sp_comprar_tokens(:usuario_id, :propiedad_id, :cantidad_tokens, :precio_unitario);
+        """), {
+            "usuario_id": usuario_id,
+            "propiedad_id": propiedad_id,
+            "cantidad_tokens": cantidad_tokens,
+            "precio_unitario": precio_unitario
+        })
         db.commit()
-        return {"status": "ok", "message": "Compra confirmada", "tokens": tokens, "propiedad_id": property_id}
+        return {
+            "status": "ok",
+            "message": "Compra confirmada",
+            "cantidad_tokens": cantidad_tokens,
+            "propiedad_id": propiedad_id
+        }
     finally:
         db.close()
 
 
-def vender_tokens(user_id: int, property_id: int, tokens: int):
+def vender_tokens(usuario_id: int, propiedad_id: int, cantidad_tokens: int, precio_unitario: Decimal):
     db = SessionLocal()
     try:
         db.execute(text("""
-            CALL housegur.sp_vender_tokens(:user_id, :property_id, :tokens, 0);
-        """), {"user_id": user_id, "property_id": property_id, "tokens": tokens})
+            CALL housegur.sp_vender_tokens(:usuario_id, :propiedad_id, :cantidad_tokens, :precio_unitario);
+        """), {
+            "usuario_id": usuario_id,
+            "propiedad_id": propiedad_id,
+            "cantidad_tokens": cantidad_tokens,
+            "precio_unitario": precio_unitario
+        })
         db.commit()
-        return {"status": "ok", "message": "Venta confirmada", "tokens": tokens, "propiedad_id": property_id}
+        return {
+            "status": "ok",
+            "message": "Venta confirmada",
+            "cantidad_tokens": cantidad_tokens,
+            "propiedad_id": propiedad_id
+        }
     finally:
         db.close()
