@@ -65,6 +65,13 @@ app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(properties.router, prefix="/properties", tags=["Properties"])
 app.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
 
+# Add holdings endpoint at root level for frontend compatibility
+@app.get("/holdings")
+def get_holdings_root(user_id: int):
+    """Get user token holdings - root level endpoint for frontend."""
+    from app.crud import get_user_holdings
+    return get_user_holdings(user_id)
+
 @app.get("/")
 def root():
     return {"message": "HOUSEGUR API is running 🚀"}

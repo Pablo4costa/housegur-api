@@ -65,3 +65,40 @@ def vender_tokens(usuario_id: int, propiedad_id: int, cantidad_tokens: int, prec
         }
     finally:
         db.close()
+
+
+def get_user_holdings(usuario_id: int):
+    db = SessionLocal()
+    try:
+        result = db.execute(text("""
+            SELECT 
+                p.id as propiedad_id,
+                p.titulo,
+                p.ciudad,
+                p.precio_token,
+                p.moneda,
+                SUM(CASE WHEN t.tipo='COMPRA' THEN t.cantidad_tokens ELSE -t.cantidad_tokens END) as tokens_owned
+            FROM housegur.transacciones t
+            JOIN housegur.propiedades p ON t.propiedad_id = p.id
+            WHERE t.usuario_id = :usuario_id
+            GROUP BY p.id, p.titulo, p.ciudad, p.precio_token, p.moneda
+            HAVING tokens_owned > 0
+            ORDER BY p.id;
+        """), {"usuario_id": usuario_id})
+        
+        holdings = []
+        for row in result:
+            valor_actual = Decimal(str(row.tokens_owned)) * row.precio_token
+            holdings.append({
+                "propiedad_id": row.propiedad_id,
+                "titulo": row.titulo,
+                "ciudad": row.ciudad,
+                "tokens_owned": row.tokens_owned,
+                "precio_token": row.precio_token,
+                "valor_actual": valor_actual,
+                "moneda": row.moneda
+            })
+        
+        return holdings
+    finally:
+        db.close()

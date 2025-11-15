@@ -22,3 +22,12 @@ class TransactionResponse(BaseModel):
     message: str
     cantidad_tokens: int
     propiedad_id: int
+
+class HoldingResponse(BaseModel):
+    propiedad_id: int
+    titulo: str
+    ciudad: str
+    tokens_owned: int
+    precio_token: Decimal
+    valor_actual: Decimal
+    moneda: str
