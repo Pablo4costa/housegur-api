@@ -11,11 +11,11 @@ class LoginResponse(BaseModel):
     nombre: str
 
 class TransactionRequest(BaseModel):
-    # Accept both Spanish canonical names and common frontend variants
-    usuario_id: int = Field(validation_alias="user_id")
-    propiedad_id: int = Field(validation_alias="property_id")
-    cantidad_tokens: int = Field(validation_alias="tokens")
-    precio_unitario: Decimal = Field(validation_alias="price_per_token")
+    # Accept both English (from legacy frontend) and Spanish field names
+    usuario_id: int = Field(alias="user_id")
+    propiedad_id: int = Field(alias="property_id")
+    cantidad_tokens: int = Field(alias="tokens")
+    precio_unitario: Decimal
 
 class TransactionResponse(BaseModel):
     status: str
