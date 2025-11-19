@@ -31,3 +31,24 @@ class HoldingResponse(BaseModel):
     precio_token: Decimal
     valor_actual: Decimal
     moneda: str
+
+class ChatMessageRequest(BaseModel):
+    usuario_id: int
+    tipo_mensaje: str
+    contenido: str
+    respuesta_asistente: str = None
+    accion_realizada: str = None
+
+class ChatMessageResponse(BaseModel):
+    status: str
+    id_conversacion: int
+    timestamp: str
+
+class ChatHistorialItem(BaseModel):
+    id: int
+    usuario_id: int
+    tipo_mensaje: str
+    contenido: str
+    respuesta_asistente: str = None
+    accion_realizada: str = None
+    timestamp: str

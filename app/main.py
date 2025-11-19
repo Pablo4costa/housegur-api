@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from sqlalchemy import text
-from app.routers import auth, properties, transactions
+from app.routers import auth, properties, transactions, chat
 from app.database import SessionLocal
 import logging
 
@@ -64,6 +64,7 @@ def startup_db_check():
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(properties.router, prefix="/properties", tags=["Properties"])
 app.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
+app.include_router(chat.router, prefix="/chat", tags=["Chat"])
 
 # Add holdings endpoint at root level for frontend compatibility
 @app.get("/holdings")
